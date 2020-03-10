@@ -43,6 +43,7 @@ def img_to_encoding_db(img):
         # print('aligned', aligned)
         return v.img_to_encoding(aligned, image_size)
     except Exception as error:
+        print('img_to_encoding_db', error)
         return error
 
 
