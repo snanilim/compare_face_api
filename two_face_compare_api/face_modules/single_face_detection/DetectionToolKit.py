@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from .detection.mtcnn import detect_face
 from scipy import misc
+import cv2
 
 default_color = (0, 255, 0) #BGR
 default_thickness = 2
@@ -64,6 +65,7 @@ class Detection:
         # print('bboxes', len(bboxes))
         for bb in bboxes:
             cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
+            # cv2.imwrite("./cropped_n.jpg", cropped)
             scaled = misc.imresize(cropped, (image_size, image_size), interp='bilinear')
             faces.append(scaled)
         return faces

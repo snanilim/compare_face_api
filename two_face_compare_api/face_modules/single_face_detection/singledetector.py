@@ -41,11 +41,22 @@ def img_to_encoding_db(img):
         print('img')
         aligned = d.align(image, False)[0]
         # print('aligned', aligned)
+        # cv2.imwrite("./aligned_n.jpg", aligned)
         return v.img_to_encoding(aligned, image_size)
     except Exception as error:
         print('img_to_encoding_db', error)
         return error
 
+def save_image_for_nid(img, img_path):
+    try:
+        image = plt.imread(img)
+        print('img')
+        aligned = d.align(image, False)[0]
+        cv2.imwrite(img_path, aligned)
+        return True
+    except Exception as error:
+        print('save_image_for_nid', error)
+        return error
 
 
 def distance(emb1, emb2):

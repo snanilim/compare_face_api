@@ -55,7 +55,7 @@ def resize_image(image):
         return False
 
 
-def base64_to_image(base64_image, img_path):
+def base64_to_image(base64_image, img_path, img_name):
     try:
         # print('base64_image', base64_image)
         encoded_data = base64_image.split(',')[1]
@@ -68,11 +68,14 @@ def base64_to_image(base64_image, img_path):
         im = Image.open(BytesIO(base64.b64decode(encoded_data)))
         image = rotate_image(im)
 
-        if image:
-            reImg = resize_image(image)
+        if img_name == 'img_nid':
+            image.convert('RGB').save(img_path)
         else:
-            reImg = resize_image(im)
-        reImg.convert('RGB').save(img_path)
+            if image:
+                reImg = resize_image(image)
+            else:
+                reImg = resize_image(im)
+            reImg.convert('RGB').save(img_path)
         return True
     except Exception as error:
         print('base64_to_image', error)
