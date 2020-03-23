@@ -21,21 +21,21 @@ def get_ext(uri):
 
 def rotate_image(im):
     try:
-        image = ImageOps.exif_transpose(im)
+        # image = ImageOps.exif_transpose(im)
         # print('image', image)
-        # for orientation in ExifTags.TAGS.keys():
-        #     if ExifTags.TAGS[orientation]=='Orientation':
-        #         break
-        # exif=dict(im._getexif().items())
-        # print('exif[orientation]', exif[orientation])
-        # if exif[orientation] == 3:
-        #     im=im.rotate(180, expand=True)
-        # elif exif[orientation] == 6:
-        #     im=im.rotate(270, expand=True)
-        # elif exif[orientation] == 8:
-        #     im=im.rotate(90, expand=True)
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation]=='Orientation':
+                break
+        exif=dict(im._getexif().items())
+        print('exif[orientation]', exif[orientation])
+        if exif[orientation] == 3:
+            im=im.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            im=im.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            im=im.rotate(90, expand=True)
 
-        return image
+        return im
     except Exception as error:
         print('error_rotate_image', error)
         return False

@@ -20,7 +20,7 @@ def index():
 @app.route('/compare_two_pic', methods=['GET', 'POST'])
 def compare_two_pic_api():
     if request.method == 'GET':
-        return jsonify({"message": "This is a post request pleasy try with a post request"})
+        return jsonify({"message": "This is a post request pleasy try with a post request im"})
     if request.method == 'POST':
         try:
             UPLOAD_FOLDER_TWO_IMG = 'static/compare_two_img'
