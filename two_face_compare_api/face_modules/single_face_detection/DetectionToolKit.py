@@ -67,8 +67,16 @@ class Detection:
             cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
             # cv2.imwrite("./cropped_n.jpg", cropped)
             scaled = misc.imresize(cropped, (image_size, image_size), interp='bilinear')
+            # cv2.imwrite("./scaled_n.jpg", scaled)
             faces.append(scaled)
         return faces
+
+    def nid_align(self, img, detect_multiple_faces = True):
+        faces = []
+        bboxes = self.detect(img, detect_multiple_faces)
+        for bb in bboxes:
+            cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
+        return cropped
     
     def crop_detected_face(self, img, bb):
         cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]

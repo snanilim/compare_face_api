@@ -3,7 +3,7 @@ import cv2
 from werkzeug.utils import secure_filename
 import re, time, base64
 import numpy as np
-from face_modules.single_face_detection import compare_two_img
+from face_modules.single_face_detection import compare_two_img, save_image_for_nid
 import PIL
 from PIL import Image, ExifTags, ImageOps
 from io import BytesIO
@@ -19,10 +19,8 @@ def get_ext(uri):
     print('firstData', ext)
     return ext
 
-def rotate_image(im):
+def rotate_image(im, img_name):
     try:
-        # image = ImageOps.exif_transpose(im)
-        # print('image', image)
         for orientation in ExifTags.TAGS.keys():
             if ExifTags.TAGS[orientation]=='Orientation':
                 break
@@ -40,12 +38,19 @@ def rotate_image(im):
         print('error_rotate_image', error)
         return False
 
-def resize_image(image):
+def resize_image(image, img_name):
     try:
-        basewidth = 300
+        if img_name == 'img_nid':
+            basewidth = 650
+        else:
+            basewidth = 300
+
         if float(image.size[0]) > basewidth:
+            print(image.size[0])
             wpercent = (basewidth / float(image.size[0]))
+            print(wpercent)
             hsize = int((float(image.size[1]) * float(wpercent)))
+            print(hsize)
             image = image.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
             return image
         else:
@@ -54,28 +59,37 @@ def resize_image(image):
         print('resize_image', error)
         return False
 
+# def nid_resize():
+    # if img_name == 'img_nid':
+    #     image = save_image_for_nid(img_path)
+    #     height, width, channels = image.shape
+        
+    #     basewidth = 110
+    #     if width > basewidth:
+    #         print(width)
+    #         wpercent = ((basewidth * 100) / width)
+    #         print(wpercent)
+    #         hsize = int((height * wpercent) / 100)
+    #         print(hsize)
+    #         image = cv2.resize(image, (basewidth, hsize)) 
+
+    #     cv2.imwrite(img_path, image)
+        # image = cv2.imread(img_path)
+
 
 def base64_to_image(base64_image, img_path, img_name):
     try:
         # print('base64_image', base64_image)
         encoded_data = base64_image.split(',')[1]
-        # imgdata = base64.b64decode(encoded_data)
-        # # print('imgdata', imgdata)
-        # with open(img_path, 'wb') as f:
-        #     f.write(imgdata)
-        # f.close()
         ext = get_ext(base64_image)
         im = Image.open(BytesIO(base64.b64decode(encoded_data)))
-        image = rotate_image(im)
-
-        if img_name == 'img_nid':
-            image.convert('RGB').save(img_path)
+        image = rotate_image(im, img_name)
+        if image:
+            reImg = resize_image(image, img_name)
         else:
-            if image:
-                reImg = resize_image(image)
-            else:
-                reImg = resize_image(im)
-            reImg.convert('RGB').save(img_path)
+            reImg = resize_image(im, img_name)
+        reImg.convert('RGB').save(img_path)
+
         return True
     except Exception as error:
         print('base64_to_image', error)

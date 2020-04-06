@@ -47,13 +47,11 @@ def img_to_encoding_db(img):
         print('img_to_encoding_db', error)
         return error
 
-def save_image_for_nid(img, img_path):
+def save_image_for_nid(img):
     try:
-        image = plt.imread(img)
-        print('img')
-        aligned = d.align(image, False)[0]
-        cv2.imwrite(img_path, aligned)
-        return True
+        img = plt.imread(img)
+        aligned = d.nid_align(img, False)
+        return aligned
     except Exception as error:
         print('save_image_for_nid', error)
         return error
