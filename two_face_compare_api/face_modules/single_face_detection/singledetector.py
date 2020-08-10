@@ -29,7 +29,7 @@ verification_threshhold = 0.9
 image_size = 160
 v = ftk.Verification()
 # Pre-load model for Verification
-v.load_model("static/models/0180204-160909/")
+v.load_model("/var/www/ekyc_two_face_compare/two_face_compare_api/static/models/0180204-160909/")
 v.initial_input_output_tensors()
 
 
@@ -43,6 +43,9 @@ def img_to_encoding_db(img):
         # print('aligned', aligned)
         # cv2.imwrite("./aligned_n.jpg", aligned)
         return v.img_to_encoding(aligned, image_size)
+    except ValueError as error:
+        print('img_to_encoding_db ValueError', error)
+        raise ValueError(error)
     except Exception as error:
         print('img_to_encoding_db', error)
         return error
@@ -75,6 +78,9 @@ def compare_two_img(image_one, image_two):
         dist = distance(enc_one, enc_two)
 
         return dist
+    except ValueError as error:
+        print('compare_two_img ValueError', error)
+        raise ValueError(error)
     except Exception as error:
         return error
 

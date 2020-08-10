@@ -137,3 +137,4 @@ lib
 lib64
 
 pyvenv.cfg
+static/compare_two_img/

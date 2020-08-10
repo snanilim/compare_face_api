@@ -32,7 +32,7 @@ class Detection:
 
             print('nrof_faces', nrof_faces)
             if nrof_faces > 1:
-                raise ValueError('Multiple face found')
+                raise ValueError('Multiple face found, please provide a single face image')
                 if detect_multiple_faces:
                     for i in range(nrof_faces):
                         det_arr.append(np.squeeze(det[i]))
@@ -55,6 +55,9 @@ class Detection:
                 bb[2] = np.minimum(det[2] + margin / 2, img_size[1])
                 bb[3] = np.minimum(det[3] + margin / 2, img_size[0])
                 bboxes.append(bb)
+
+        else:
+            raise ValueError('NO face found, please provide a single face image')
         return bboxes
             
 
